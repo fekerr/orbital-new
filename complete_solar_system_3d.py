@@ -64,9 +64,9 @@ class SolarSystemAnimation3D:
         }
         
         # Initialize asteroid populations
-        self.num_asteroids = 1000
-        self.num_hildas = 300
-        self.num_trojans = 200
+        self.num_asteroids = 500  # Reduced from 1000
+        self.num_hildas = 150     # Reduced from 300
+        self.num_trojans = 100    # Reduced from 200
         self.num_kuiper = 500  # Added Kuiper Belt objects
         
         # Initialize positions
@@ -78,36 +78,39 @@ class SolarSystemAnimation3D:
         for planet in self.radii.keys():
             self.planet_positions[planet] = {'x': [], 'y': [], 'z': []}
         
-        # Initialize main belt asteroids
+        # Initialize main belt asteroids with more spread
         self.belt_angles = np.random.uniform(0, 2*np.pi, self.num_asteroids)
-        self.belt_radii = np.random.uniform(4.5, 11, self.num_asteroids)
-        self.belt_eccentricity = np.random.uniform(0, 0.15, self.num_asteroids)
-        self.belt_inclination = np.random.uniform(-15, 15, self.num_asteroids)
+        # Spread asteroids between Mars and Jupiter with a more uniform distribution
+        self.belt_radii = np.random.uniform(5, 11, self.num_asteroids)  # Start after Mars
+        # Increase eccentricity variation
+        self.belt_eccentricity = np.random.uniform(0.1, 0.3, self.num_asteroids)
+        # Increase inclination spread
+        self.belt_inclination = np.random.uniform(-20, 20, self.num_asteroids)
         self.belt_phase = np.random.uniform(0, 2*np.pi, self.num_asteroids)
         self.belt_ascending_nodes = np.random.uniform(0, 2*np.pi, self.num_asteroids)
         
-        # Initialize Hildas
+        # Initialize Hildas with more spread
         self.hilda_angles = []
         for angle in [0, 2*np.pi/3, 4*np.pi/3]:
-            cluster_angles = np.random.normal(angle, 0.3, self.num_hildas//3)
+            cluster_angles = np.random.normal(angle, 0.5, self.num_hildas//3)  # Increased spread
             self.hilda_angles.extend(cluster_angles)
         self.hilda_angles = np.array(self.hilda_angles)
-        self.hilda_radii = np.random.normal(self.radii['Jupiter'] * 0.8, 0.3, len(self.hilda_angles))
-        self.hilda_inclination = np.random.uniform(-5, 5, len(self.hilda_angles))
+        self.hilda_radii = np.random.normal(self.radii['Jupiter'] * 0.8, 0.8, len(self.hilda_angles))
+        self.hilda_inclination = np.random.uniform(-10, 10, len(self.hilda_angles))
         self.hilda_phase = np.random.uniform(0, 2*np.pi, len(self.hilda_angles))
         
-        # Initialize Trojans
-        self.trojan_angles1 = np.random.normal(np.pi/3, 0.2, self.num_trojans)
-        self.trojan_angles2 = np.random.normal(5*np.pi/3, 0.2, self.num_trojans)
-        self.trojan_radii = np.random.normal(self.radii['Jupiter'], 0.5, self.num_trojans)
-        self.trojan_inclination = np.random.uniform(-10, 10, self.num_trojans)
+        # Initialize Trojans with more spread
+        self.trojan_angles1 = np.random.normal(np.pi/3, 0.4, self.num_trojans)  # Increased spread
+        self.trojan_angles2 = np.random.normal(5*np.pi/3, 0.4, self.num_trojans)
+        self.trojan_radii = np.random.normal(self.radii['Jupiter'], 1.0, self.num_trojans)
+        self.trojan_inclination = np.random.uniform(-15, 15, self.num_trojans)
         self.trojan_phase = np.random.uniform(0, 2*np.pi, self.num_trojans)
         
-        # Initialize Kuiper Belt objects
+        # Initialize Kuiper Belt objects with more spread
         self.kuiper_angles = np.random.uniform(0, 2*np.pi, self.num_kuiper)
-        self.kuiper_radii = np.random.uniform(77, 100, self.num_kuiper)
-        self.kuiper_inclination = np.random.uniform(-20, 20, self.num_kuiper)
-        self.kuiper_eccentricity = np.random.uniform(0, 0.2, self.num_kuiper)
+        self.kuiper_radii = np.random.uniform(80, 120, self.num_kuiper)  # Increased range
+        self.kuiper_inclination = np.random.uniform(-30, 30, self.num_kuiper)  # Increased inclination
+        self.kuiper_eccentricity = np.random.uniform(0.1, 0.3, self.num_kuiper)  # Increased eccentricity
         self.kuiper_ascending_nodes = np.random.uniform(0, 2*np.pi, self.num_kuiper)
         
     def calculate_3d_position(self, radius, angle, inclination, ascending_node=0):
@@ -245,7 +248,7 @@ styles = {'light': 'default', 'dark': 'dark_background'}
 for version, style in styles.items():
     solar_system = SolarSystemAnimation3D(style=style)
     filename = os.path.join(OS_PATH, f"output/complete_solar_system_3d_{version}.mov")
-    solar_system.save4k(filename)
+    #solar_system.save4k(filename)
     filename = os.path.join(OS_PATH, f"output/complete_solar_system_3d_{version}.gif")
     solar_system.save(filename)
     #solar_system.animate()
