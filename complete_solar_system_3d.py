@@ -334,11 +334,14 @@ class Config:
 
 class SolarSystemAnimation3D:
     
-    def __init__(self, style='default'):
+    def __init__(self, style='default', elev=20, azim=45):
         # Set up the 3D figure
         plt.style.use(style)
         self.fig = plt.figure(figsize=(16, 9))
         self.ax = self.fig.add_subplot(111, projection='3d')
+        
+        self.elev = elev
+        self.azim = azim
         
         # Extract settings from the new Config structure
         self.settings = Config.SETTINGS
@@ -450,7 +453,7 @@ class SolarSystemAnimation3D:
             
             # Update moon positions
             for moon, moon_props in properties['moons'].items():
-                moon_period = moon_props['orbital_period'] / (properties['orbital_period'] * 365.25)
+                moon_period = moon_props['orbital_period'] / (365.25 * properties['orbital_period'])
                 moon_angular_velocity = 2 * np.pi / moon_period
                 moon_angle = -(current_speed * frame * moon_angular_velocity)
                 
@@ -630,7 +633,7 @@ class SolarSystemAnimation3D:
         self.ax.set_axis_off()
         
         plt.subplots_adjust(left=-.5, bottom=-2, right=1.5, top=3, wspace=None, hspace=None)
-        self.ax.view_init(elev=20, azim=45)
+        self.ax.view_init(elev=self.elev, azim=self.azim)
         self.ax.set_title('Complete Solar System Animation', pad=20)
 
         
@@ -738,14 +741,16 @@ class SolarSystemAnimation3D:
 
 styles = {'light': 'default', 'dark': 'dark_background'}
 for version, style in styles.items():
-    solar_system = SolarSystemAnimation3D(style=style)
-    
-    filename = os.path.join(OS_PATH, f"output/complete_solar_system_3d_{version}.gif")
-    # solar_system.save(filename)
-    
-    filename = os.path.join(OS_PATH, f"output/complete_solar_system_3d_{version}_1080p.mp4")
-    solar_system.save1080p(filename)
-    
-    filename = os.path.join(OS_PATH, f"output/complete_solar_system_3d_{version}_4k.mov")
-    solar_system.save4k(filename)
-    # solar_system.animate()
+    # Default 3D Perspective
+    solar_system = SolarSystemAnimation3D(style=style, elev=20, azim=45)
+    solar_system.save(os.path.join(OS_PATH, f"output/complete_solar_system_3d_{version}.gif"))
+    solar_system.save1080p(os.path.join(OS_PATH, f"output/complete_solar_system_3d_{version}_1080p.mp4"))
+    solar_system.save4k(os.path.join(OS_PATH, f"output/complete_solar_system_3d_{version}_4k.mov"))
+    #solar_system.animate()
+
+    # Top-Down View
+    solar_system_top_down = SolarSystemAnimation3D(style=style, elev=90, azim=0)
+    solar_system_top_down.save(os.path.join(OS_PATH, f"output/complete_solar_system_3d_top_down_{version}.gif"))
+    solar_system_top_down.save1080p(os.path.join(OS_PATH, f"output/complete_solar_system_3d_top_down_{version}_1080p.mp4"))
+    solar_system_top_down.save4k(os.path.join(OS_PATH, f"output/complete_solar_system_3d_top_down_{version}_4k.mov"))
+    #solar_system_top_down.animate()
