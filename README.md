@@ -2,6 +2,9 @@
 
 A comprehensive 3D visualization of our solar system including planets, moons, asteroid belts, and the Oort cloud implemented in Python using Matplotlib.
 
+<img width="100%" alt="Screenshot 2025-01-19 at 15 32 35" src="https://github.com/user-attachments/assets/3beb28dd-457a-4fcb-b41a-de6aa0a573dc" />
+
+
 ## Features
 
 - Full 3D representation of the solar system
