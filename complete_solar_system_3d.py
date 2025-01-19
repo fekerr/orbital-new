@@ -450,7 +450,7 @@ class SolarSystemAnimation3D:
             
             # Update moon positions
             for moon, moon_props in properties['moons'].items():
-                moon_period = moon_props['orbital_period'] / (365.25 * properties['orbital_period'])
+                moon_period = moon_props['orbital_period'] / (properties['orbital_period'] * 365.25)
                 moon_angular_velocity = 2 * np.pi / moon_period
                 moon_angle = -(current_speed * frame * moon_angular_velocity)
                 
