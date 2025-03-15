@@ -1,3 +1,6 @@
+Below is an updated version of your `check_yaml.sh` wrapper that incorporates the checked filename into the log filename. Now, the log file name will include the basename of the YAML file (with the `.yaml` extension removed), followed by an underscore, the current date in `YYYYMMDD` format, and an incrementing three-digit counter. For example, if you are checking `output_2d_chunks.yaml`, the log might be named something like `output_2d_chunks_20250315_001.log`.
+
+```bash
 #!/bin/bash
 # check_yaml.sh
 # This script checks a YAML file using yamllint and outputs the lint results
@@ -67,3 +70,33 @@ LOGFILE_PATH="$LOGDIR/$LOGFILE_NAME"
 yamllint "$FILE" | tee "$LOGFILE_PATH"
 
 echo "Lint output saved to $LOGFILE_PATH"
+```
+
+### Explanation
+
+- **File Name Extraction:**  
+  We use `basename "$FILE" .yaml` to strip the `.yaml` extension from the filename. This gives a base name (e.g., "output_2d_chunks") that is then incorporated into the final log filename.
+
+- **Counter Calculation:**  
+  The script searches for any existing logs matching the pattern `<FILEBASE>_<TODAY>_*.log` to find the highest counter and increments it by one.
+
+- **Output Log File Naming:**  
+  The final log file is built with the pattern `<FILEBASE>_<TODAY>_<COUNTER_FMT>.log`.
+
+- **Logging:**  
+  The output of `yamllint` is piped to both `tee` (thereby showing output in the terminal) and written into the log file.
+
+### Integration with Ninja
+
+Your `build.ninja` rule for YAML checking now calls this wrapper script. The relevant rule in your `build.ninja` remains:
+
+```ninja
+# Rule: Check a YAML file using the check_yaml.sh wrapper script.
+rule check_yaml
+  command = ./check_yaml.sh $in
+  description = "Checking YAML file $in with yamllint"
+```
+
+This approach eliminates the need to manually escape dollar signs for the environment variables and simplifies maintenance. It also ensures that each checked file produces a uniquely named log that includes the file's name.
+
+Let me know if you have further questions or need additional modifications!
