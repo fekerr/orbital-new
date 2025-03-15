@@ -1,31 +1,25 @@
 # build.ninja
 #
 # This file defines build targets using Ninja.
-# It includes:
-# 1. An "install_tools" target that runs the install_tools.sh script to install Python dependencies (e.g., PyYAML).
-# 2. A "build_chunks" target that uses the python_to_yaml.py script to convert a Python script into a YAML file.
-# 3. A default "all" target that depends on both the above targets.
 
-# Rule for installing required tools by executing install_tools.sh
+# Rule to install required tools by running install_tools.sh.
 rule install_tools
   command = ./install_tools.sh
-  description = Installing required Python packages (PyYAML)
+  description = Installing required tools (Ninja and PyYAML)
 
-# Phony target to install tools; depends on the install_tools.sh script.
+# Phony target for installing tools (always runs).
 build install_tools: phony install_tools.sh
 
-# Rule for building YAML chunks from a Python source file.
+# Rule for building YAML chunks using the python_to_yaml.py script.
 rule build_chunks
   command = python3 python_to_yaml.py $in $out
   description = Building YAML chunks from $in
 
-# Example: Build target that converts a specified Python script to a YAML output file.
-# Replace "../inner_solar_system_more_action_2d.py" and "output_chunks.yaml"
-# with the appropriate input and output file names for your project.
+# Example target: Build YAML chunks from a specified input Python file.
 build output_chunks.yaml: build_chunks ../inner_solar_system_more_action_2d.py
 
-# Phony target "all" to group the targets for one-shot execution.
+# Phony target 'all' to group targets.
 build all: phony install_tools output_chunks.yaml
 
-# Set the default target so that running "ninja" builds everything.
+# Set default target.
 default all
