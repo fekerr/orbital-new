@@ -1,3 +1,12 @@
+Below is a complete version of your `build.ninja` file that incorporates all the targets to install tools, build YAML chunks, check the generated YAML files using yamllint (with proper escaping so that environment variables and Ninja variables are passed correctly), as well as auxiliary targets for gitup and cleaning built files. Remember that before you run Ninja, you should source your environment variables with:
+
+```bash
+source setenv.sh
+```
+
+Here’s the complete `build.ninja` file:
+
+```ninja
 # build.ninja
 #
 # This file defines build targets using Ninja for our project.
@@ -64,3 +73,28 @@ build all: phony install_tools output_2d_chunks.yaml output_3d_chunks.yaml yaml_
 
 # Set the default target to 'all'.
 default all
+```
+
+### Notes
+
+- **Escaping `$` Signs:**  
+  In the `check_yaml` rule, every `$` intended for the shell is written as `$$`. This ensures that when Ninja expands its variables (such as `$in`), the shell sees the correct values.
+  
+- **Environment Variable for YAML Linting:**  
+  The rule uses `"$${FEKERR_YAML_CHECK:-1}"` so that if `FEKERR_YAML_CHECK` isn’t defined in your environment, it defaults to 1 (i.e. YAML linting is enabled).
+
+- **Auxiliary Targets:**  
+  The targets for `gitup` and `clean` are provided as phony targets so they can be run independently as needed:
+  - To auto-commit your changes with an incrementing commit number, run:
+    ```bash
+    ninja gitup
+    ```
+  - To remove generated build files (YAML outputs), run:
+    ```bash
+    ninja clean
+    ```
+
+- **Default Target:**  
+  Running `ninja` without arguments will execute the default `all` target, which installs tools, builds both YAML chunk files, verifies them with `yamllint` (if enabled), and runs the auto-commit script.
+
+This integrated setup should streamline your build process and provide clear logging and error checking. Let me know if you need further modifications or additional features!
