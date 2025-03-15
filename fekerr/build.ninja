@@ -1,7 +1,25 @@
 # build.ninja
 #
-# This file defines build targets using Ninja.
+# This file defines build targets using Ninja for our project.
+# It includes:
+#
+#   1. A generic target to install required tools by running install_tools.sh.
+#   2. A generic build_chunks rule that converts a Python source file into a YAML file.
+#   3. Rules to check the generated YAML files using yamllint.
+#      The YAML linter is run conditionally, based on the environment variable FEKERR_YAML_CHECK.
+#
+# Environment Variable:
+#   FEKERR_YAML_CHECK - If undefined or set to 1 (true), YAML linting is performed.
+#                       If set to 0, the YAML check is skipped.
+#
+# Future enhancements could include more advanced AST-based parsing,
+# an "imports section" (to consolidate import statements in the YAML),
+# and even automatic diagram generation for code, data, and control flow.
+#
+# While YAML is standard for configuration and documentation, alternatives like JSON or TOML
+# could be considered if strict schema validation is needed. For now, YAML remains a good choice.
 
+# ----------------------------------------------------------------------
 # Rule to install required tools by running install_tools.sh.
 rule install_tools
   command = ./install_tools.sh
@@ -10,23 +28,33 @@ rule install_tools
 # Phony target for installing tools (always runs).
 build install_tools: phony install_tools.sh
 
-# Rules for building YAML chunks using the python_to_yaml.py script.
-rule build_2d_chunks
+# ----------------------------------------------------------------------
+# Generic rule to build YAML chunks from a Python source file.
+rule build_chunks
   command = python3 python_to_yaml.py $in $out
   description = Building YAML chunks from $in
 
-rule build_3d_chunks
-  command = python3 python_to_yaml.py $in $out
-  description = Building YAML chunks from $in
+# Build targets for generating YAML chunks from given Python inputs.
+build output_2d_chunks.yaml: build_chunks ../inner_solar_system_more_action_2d.py
+build output_3d_chunks.yaml: build_chunks ../complete_solar_system_3d.py
 
-# Example target: Build YAML chunks from a specified input Python file.
-build output_2d_chunks.yaml: build_2d_chunks ../inner_solar_system_more_action_2d.py
+# ----------------------------------------------------------------------
+# Rule to check a YAML file using yamllint.
+# This rule uses an inline bash command to check if the environment variable FEKERR_YAML_CHECK is 1 (or unset, defaulting to 1).
+rule check_yaml
+  command = bash -c 'if [ "${FEKERR_YAML_CHECK:-1}" -eq 1 ]; then yamllint "$in"; else echo "YAML lint check skipped for $in"; fi'
+  description = "Checking YAML file $in with yamllint"
 
-# Example target: Build YAML chunks from a specified input Python file.
-build output_3d_chunks.yaml: build_3d_chunks ../complete_solar_system_3d.py
+# Build targets to check the generated YAML files.
+build check_2d_yaml: check_yaml output_2d_chunks.yaml
+build check_3d_yaml: check_yaml output_3d_chunks.yaml
 
-# Phony target 'all' to group targets.
-build all: phony install_tools output_2d_chunks.yaml output_3d_chunks.yaml
+# Phony target grouping all YAML check targets.
+build yaml_check: phony check_2d_yaml check_3d_yaml
 
-# Set default target.
+# ----------------------------------------------------------------------
+# Phony 'all' target groups installation, building, and YAML checking.
+build all: phony install_tools output_2d_chunks.yaml output_3d_chunks.yaml yaml_check
+
+# Set the default target so running "ninja" will execute 'all'.
 default all

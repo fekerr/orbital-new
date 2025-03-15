@@ -1,3 +1,6 @@
+Below is the updated version of your `install_tools.sh` that now also installs the YAML linting tool (yamllint) in addition to Ninja and PyYAML. This script checks for Ninja and yamllint, installing them if they're not present, and then upgrades pip and installs PyYAML via pip.
+
+```bash
 #!/bin/bash
 # install_tools.sh
 # This script installs required tools for the project:
@@ -43,3 +46,18 @@ pip3 install --upgrade pip
 pip3 install PyYAML
 
 echo "All required tools have been installed."
+```
+
+### How This Works
+- **install_ninja:**  
+  Checks if the `ninja` command is available. If not, updates the package list and installs `ninja-build` using apt-get (using sudo if necessary).
+
+- **install_yamllint:**  
+  Checks for the presence of `yamllint`. If it’s not found, installs it via `pip3`. You can later switch to using a system package if desired.
+
+- **Pip Operations:**  
+  It upgrades pip and installs PyYAML, ensuring the necessary Python dependencies are available.
+
+This script is now ready to be used both in your development environment and in your Dockerfile (by running it during the Docker build process) to ensure all tools are installed consistently.
+
+Let me know if you need further modifications or additional features!
