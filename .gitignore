@@ -1,0 +1,23 @@
+# Ignore Python cache and bytecode files
+__pycache__/
+*.py[co]
+*.pyo
+*.pyd
+
+# Do NOT ignore generated YAML chunk files; we want these committed.
+#output_inner2d_chunks.yaml
+#output_complete3d_chunks.yaml
+#output_chunks.yaml
+#output_2d_chunks.yaml
+#output_3d_chunks.yaml
+
+# Ignore Ninja build log
+.ninja_log
+
+# Ignore the commit count file used by the gitup script, if you don't want it tracked.
+commit_count.txt
+
+# Ignore temporary editor files and backups
+*~
+*.swp
+*.swo
