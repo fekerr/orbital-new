@@ -1,3 +1,45 @@
+Below is an alternative approach that avoids the in‐line dollar escapes altogether by moving the YAML linting command into its own shell wrapper script. This way, the Ninja rule simply calls the script with the input file as an argument, and you no longer need to worry about escaping variables such as `$in` in a bash command line.
+
+---
+
+### 1. Create a Wrapper Script: `check_yaml.sh`
+
+Create a file called `check_yaml.sh` in your repository with the following content:
+
+```bash
+#!/bin/bash
+# check_yaml.sh
+# This script checks a YAML file using yamllint.
+# It uses the environment variable FEKERR_YAML_CHECK (default: 1) to control whether the check runs.
+# Usage: ./check_yaml.sh <filename>
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <filename>" >&2
+    exit 1
+fi
+
+FILE="$1"
+echo "Linting file: $FILE"
+if [ "${FEKERR_YAML_CHECK:-1}" -eq 1 ]; then
+    yamllint "$FILE"
+else
+    echo "YAML lint check skipped for $FILE"
+fi
+```
+
+Make sure to mark it as executable:
+
+```bash
+chmod +x check_yaml.sh
+```
+
+---
+
+### 2. Update Your `build.ninja` File
+
+Now update the YAML check rule in your `build.ninja` to call the wrapper script instead of embedding the bash logic directly. This simplifies the syntax and avoids the kludgy escaping issues. Here’s a complete updated version of your `build.ninja` file that includes the new `check_yaml` rule:
+
+```ninja
 # build.ninja
 #
 # This file defines build targets using Ninja for our project.
@@ -66,3 +108,35 @@ default all
 # ----------------------------------------------------------------------
 # Backlog / Future Tasks:
 # - Verify and test the "gitup" target (ninja gitup) thoroughly.
+```
+
+---
+
+### Usage Recap
+
+1. **Set Up the Environment:**  
+   In your terminal, run:
+   ```bash
+   source setenv.sh
+   ```
+
+2. **Run Ninja:**  
+   Execute:
+   ```bash
+   ninja
+   ```
+   This will:
+   - Run the `install_tools.sh` target,
+   - Build your YAML chunk files,
+   - Check the YAML files using `check_yaml.sh` (which calls `yamllint`),
+   - And execute `gitup.sh` for auto-committing.
+
+3. **Clean Build Files:**  
+   To remove generated YAML files, run:
+   ```bash
+   ninja clean
+   ```
+
+---
+
+This approach eliminates the need to juggle dollar escapes in your Ninja file by delegating the YAML linting logic to an external, testable script. Let me know if you need further modifications or have any other questions!
