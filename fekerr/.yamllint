@@ -5,4 +5,4 @@ rules:
     # This rule is now satisfied by explicit_start in PyYAML.
     level: warning
   line-length:
-    max: 120  # Increase from 80 to 120 characters; adjust as desired
+    max: 140  # Increase from 80 to 140 characters; adjust as desired
