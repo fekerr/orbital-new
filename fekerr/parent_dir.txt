@@ -1,0 +1,24 @@
+total 132
+-rw-r--r--  1 fekerr fekerr  9215 Mar  4 14:15 inner_solar_system_more_action_2d.py
+-rw-r--r--  1 fekerr fekerr 33181 Mar  4 14:15 complete_solar_system_3d.py
+-rw-r--r--  1 fekerr fekerr  3916 Mar  4 14:15 README.md
+-rw-r--r--  1 fekerr fekerr  1068 Mar  4 14:15 LICENSE
+drwxr-xr-x  6 fekerr fekerr  4096 Mar  4 14:21 venv
+-rw-r--r--  1 fekerr fekerr   367 Mar  4 14:23 basic_fek.py
+drwxr-xr-x  2 fekerr fekerr  4096 Mar  4 14:23 __pycache__
+drwxr-xr-x  2 fekerr fekerr  4096 Mar  4 14:25 output
+drwxr-xr-x  2 fekerr fekerr  4096 Mar  5 05:12 chunks001
+drwxr-xr-x  2 fekerr fekerr  4096 Mar  5 05:23 chunks003
+drwxr-xr-x  2 fekerr fekerr  4096 Mar  5 05:33 chunks002
+drwxr-xr-x 55 fekerr fekerr  4096 Mar 14 14:23 ..
+-rw-r--r--  1 fekerr fekerr  2198 Mar 15 03:25 work_history.md
+-rw-r--r--  1 fekerr fekerr   320 Mar 15 03:42 new_repo_work.sh
+-rw-r--r--  1 fekerr fekerr   254 Mar 15 03:45 new_repo_work.md
+drwxr-xr-x  2 fekerr fekerr  4096 Mar 15 08:00 fekerr_arch
+-rw-r--r--  1 fekerr fekerr    61 Mar 15 08:01 setenv.sh
+-rw-r--r--  1 fekerr fekerr    67 Mar 15 08:02 setup_fek.sh
+drwxr-xr-x  2 fekerr fekerr  4096 Mar 15 08:10 chunks_old
+drwxr-xr-x 13 fekerr fekerr  4096 Mar 15 08:15 .
+drwxr-xr-x  2 fekerr fekerr  4096 Mar 15 10:37 copilot
+drwxr-xr-x  8 fekerr fekerr  4096 Mar 15 10:38 .git
+drwxr-xr-x  3 fekerr fekerr  4096 Mar 15 10:39 fekerr

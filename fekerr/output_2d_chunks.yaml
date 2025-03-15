@@ -1,0 +1,208 @@
+- chunk_id: '001'
+  description: Chunk 1
+  enabled: true
+  content: 'import numpy as np
+
+    '
+  metadata:
+    performance: {}
+    history: Chunk generated from lines 1 to 1.
+    error_bars: null
+- chunk_id: '002'
+  description: Chunk 2
+  enabled: true
+  content: 'import matplotlib.pyplot as plt
+
+    '
+  metadata:
+    performance: {}
+    history: Chunk generated from lines 2 to 2.
+    error_bars: null
+- chunk_id: '003'
+  description: Chunk 3
+  enabled: true
+  content: 'from matplotlib.animation import FuncAnimation, PillowWriter
+
+    '
+  metadata:
+    performance: {}
+    history: Chunk generated from lines 3 to 3.
+    error_bars: null
+- chunk_id: '004'
+  description: Chunk 4
+  enabled: true
+  content: 'import matplotlib.colors as mcolors
+
+    '
+  metadata:
+    performance: {}
+    history: Chunk generated from lines 4 to 4.
+    error_bars: null
+- chunk_id: '005'
+  description: Chunk 5
+  enabled: true
+  content: 'from matplotlib.animation import FFMpegWriter
+
+    '
+  metadata:
+    performance: {}
+    history: Chunk generated from lines 5 to 5.
+    error_bars: null
+- chunk_id: '006'
+  description: Chunk 6
+  enabled: true
+  content: 'import os
+
+
+    '
+  metadata:
+    performance: {}
+    history: Chunk generated from lines 6 to 7.
+    error_bars: null
+- chunk_id: '007'
+  description: Chunk 7
+  enabled: true
+  content: 'OS_PATH = os.path.dirname(os.path.realpath(''__file__''))
+
+
+    '
+  metadata:
+    performance: {}
+    history: Chunk generated from lines 8 to 9.
+    error_bars: null
+- chunk_id: 008
+  description: Chunk 8
+  enabled: true
+  content: "class SolarSystemAnimation:\n    def __init__(self, style='default'):\n\
+    \        # Set up the figure\n        plt.style.use(style)\n        self.fig,\
+    \ self.ax = plt.subplots(figsize=(12, 12))\n        \n        # Orbital periods\
+    \ (relative to Jupiter = 1)\n        self.periods = {\n            'Mercury':\
+    \ 0.24,\n            'Venus': 0.62,\n            'Earth': 1.0,\n            'Mars':\
+    \ 1.88,\n            'Jupiter': 11.86\n        }\n        \n        # Orbital\
+    \ radii\n        self.radii = {\n            'Mercury': 1,\n            'Venus':\
+    \ 1.8,\n            'Earth': 2.5,\n            'Mars': 3.8,\n            'Jupiter':\
+    \ 13\n        }\n        \n        # Initialize asteroid populations\n       \
+    \ self.num_asteroids = 1000\n        self.num_hildas = 300\n        self.num_trojans\
+    \ = 200\n        \n        # Initialize positions\n        self.init_positions()\n\
+    \        \n    def init_positions(self):\n        # Initialize planet positions\n\
+    \        self.planet_positions = {}\n        for planet in self.radii.keys():\n\
+    \            self.planet_positions[planet] = {'x': [], 'y': []}\n        \n  \
+    \      # Initialize main belt asteroids with more dynamic properties\n       \
+    \ self.belt_angles = np.random.uniform(0, 2*np.pi, self.num_asteroids)\n     \
+    \   self.belt_radii = np.random.uniform(4.5, 11, self.num_asteroids)\n       \
+    \ self.belt_eccentricity = np.random.uniform(0, 0.15, self.num_asteroids)\n  \
+    \      self.belt_inclination = np.random.uniform(-0.1, 0.1, self.num_asteroids)\n\
+    \        self.belt_phase = np.random.uniform(0, 2*np.pi, self.num_asteroids)\n\
+    \        # New parameters for enhanced belt movement\n        self.belt_oscillation\
+    \ = np.random.uniform(0.1, 0.3, self.num_asteroids)\n        self.belt_oscillation_freq\
+    \ = np.random.uniform(0.01, 0.03, self.num_asteroids)\n        self.belt_radial_variation\
+    \ = np.random.uniform(0.2, 0.4, self.num_asteroids)\n        \n        # Initialize\
+    \ Hildas with more dynamic movement\n        self.hilda_angles = []\n        for\
+    \ angle in [0, 2*np.pi/3, 4*np.pi/3]:\n            cluster_angles = np.random.normal(angle,\
+    \ 0.3, self.num_hildas//3)\n            self.hilda_angles.extend(cluster_angles)\n\
+    \        self.hilda_angles = np.array(self.hilda_angles)\n        self.hilda_radii\
+    \ = np.random.normal(self.radii['Jupiter'] * 0.8, 0.3, len(self.hilda_angles))\n\
+    \        self.hilda_oscillation = np.random.uniform(0.1, 0.3, len(self.hilda_angles))\n\
+    \        self.hilda_phase = np.random.uniform(0, 2*np.pi, len(self.hilda_angles))\n\
+    \        \n        # Initialize Trojans with libration\n        self.trojan_angles1\
+    \ = np.random.normal(np.pi/3, 0.2, self.num_trojans)\n        self.trojan_angles2\
+    \ = np.random.normal(5*np.pi/3, 0.2, self.num_trojans)\n        self.trojan_radii\
+    \ = np.random.normal(self.radii['Jupiter'], 0.5, self.num_trojans)\n        self.trojan_libration\
+    \ = np.random.uniform(0.05, 0.15, self.num_trojans)\n        self.trojan_phase\
+    \ = np.random.uniform(0, 2*np.pi, self.num_trojans)\n        \n    def update(self,\
+    \ frame):\n        self.ax.clear()\n        \n        # Update planet positions\n\
+    \        for planet, radius in self.radii.items():\n            period_factor\
+    \ = self.periods[planet]\n            angle = (2 * np.pi * frame / (100 * period_factor))\
+    \ % (2 * np.pi)\n            x = radius * np.cos(angle)\n            y = radius\
+    \ * np.sin(angle)\n            self.planet_positions[planet]['x'] = x\n      \
+    \      self.planet_positions[planet]['y'] = y\n        \n        # Draw orbital\
+    \ paths\n        theta = np.linspace(0, 2*np.pi, 100)\n        for radius in self.radii.values():\n\
+    \            x = radius * np.cos(theta)\n            y = radius * np.sin(theta)\n\
+    \            self.ax.plot(x, y, 'b-', alpha=0.1)\n        \n        # Update main\
+    \ belt asteroids with enhanced dynamic movement\n        belt_angles_update =\
+    \ self.belt_angles + frame * 0.02 / np.sqrt(self.belt_radii)\n        \n     \
+    \   # Combine multiple movement patterns\n        # 1. Eccentric orbits\n    \
+    \    eccentric_radii = self.belt_radii * (1 + self.belt_eccentricity * np.cos(belt_angles_update))\n\
+    \        \n        # 2. Radial oscillation\n        radial_oscillation = self.belt_radial_variation\
+    \ * np.sin(frame * self.belt_oscillation_freq + self.belt_phase)\n        dynamic_radii\
+    \ = eccentric_radii + radial_oscillation\n        \n        # 3. Vertical oscillation\
+    \ with varying frequencies\n        belt_z = self.belt_inclination * np.sin(belt_angles_update\
+    \ * 2 + self.belt_phase)\n        \n        # 4. Additional orbital perturbation\n\
+    \        orbital_perturbation = self.belt_oscillation * np.cos(frame * 0.03 +\
+    \ self.belt_phase)\n        \n        # Combine all movements\n        belt_x\
+    \ = dynamic_radii * np.cos(belt_angles_update + orbital_perturbation)\n      \
+    \  belt_y = dynamic_radii * np.sin(belt_angles_update + orbital_perturbation)\n\
+    \        belt_y += belt_z\n        \n        # Jupiter's position affects Trojans\
+    \ and Hildas\n        jupiter_angle = (2 * np.pi * frame / (100 * self.periods['Jupiter']))\
+    \ % (2 * np.pi)\n        \n        # Update Hildas with oscillating movement\n\
+    \        base_hilda_speed = 0.005  # Base orbital speed for Hildas\n        hilda_angles_update\
+    \ = (self.hilda_angles + \n                             frame * base_hilda_speed\
+    \ + # Add basic orbital motion\n                             jupiter_angle * 2/3)\
+    \       # Keep resonance with Jupiter\n        \n        # Add oscillation to\
+    \ create the triangular pattern\n        oscillation = self.hilda_oscillation\
+    \ * np.sin(frame * 0.1 + self.hilda_phase)\n        hilda_radii_dynamic = self.hilda_radii\
+    \ + oscillation\n        \n        # Calculate positions\n        hilda_x = hilda_radii_dynamic\
+    \ * np.cos(hilda_angles_update)\n        hilda_y = hilda_radii_dynamic * np.sin(hilda_angles_update)\n\
+    \        \n        # Update Trojans with libration\n        libration1 = self.trojan_libration\
+    \ * np.sin(frame * 0.05 + self.trojan_phase)\n        libration2 = self.trojan_libration\
+    \ * np.sin(frame * 0.05 + self.trojan_phase + np.pi)\n        trojan_angles1_update\
+    \ = self.trojan_angles1 + jupiter_angle + libration1\n        trojan_angles2_update\
+    \ = self.trojan_angles2 + jupiter_angle + libration2\n        trojan_x1 = self.trojan_radii\
+    \ * np.cos(trojan_angles1_update)\n        trojan_y1 = self.trojan_radii * np.sin(trojan_angles1_update)\n\
+    \        trojan_x2 = self.trojan_radii * np.cos(trojan_angles2_update)\n     \
+    \   trojan_y2 = self.trojan_radii * np.sin(trojan_angles2_update)\n        \n\
+    \        # Plot everything\n        # Planets\n        self.ax.scatter(0, 0, c='yellow',\
+    \ s=100)  # Sun\n        for planet, pos in self.planet_positions.items():\n \
+    \           color = 'gray' if planet == 'Mercury' else 'orange' if planet in ['Venus',\
+    \ 'Jupiter'] else 'blue' if planet == 'Earth' else 'red'\n            size = 60\
+    \ if planet == 'Jupiter' else 30 if planet in ['Earth', 'Venus'] else 20\n   \
+    \         self.ax.scatter(pos['x'], pos['y'], c=color, s=size)\n            self.ax.text(pos['x']\
+    \ + 0.2, pos['y'] + 0.2, planet, fontsize=8)\n        \n        # Asteroids with\
+    \ varying opacity based on vertical position and radial oscillation\n        belt_opacity\
+    \ = 0.3 + 0.2 * (belt_z / np.max(np.abs(belt_z))) + 0.1 * (radial_oscillation\
+    \ / np.max(np.abs(radial_oscillation)))\n        belt_opacity = np.clip(belt_opacity,\
+    \ 0.1, 0.8)\n        self.ax.scatter(belt_x, belt_y, c='red', s=1, alpha=belt_opacity)\n\
+    \        self.ax.scatter(hilda_x, hilda_y, c='purple', s=1, alpha=0.3)\n     \
+    \   self.ax.scatter(trojan_x1, trojan_y1, c='green', s=1, alpha=0.3)\n       \
+    \ self.ax.scatter(trojan_x2, trojan_y2, c='green', s=1, alpha=0.3)\n        \n\
+    \        # Customize plot\n        self.ax.set_aspect('equal')\n        self.ax.set_xlim(-15,\
+    \ 15)\n        self.ax.set_ylim(-15, 15)\n        self.ax.set_axis_off()\n   \
+    \     self.ax.set_title(f'Solar System Animation - Frame {frame}', pad=20)\n \
+    \       \n    def animate(self):\n        anim = FuncAnimation(self.fig, self.update,\
+    \ frames=2000, \n                           interval=50, blit=False)\n       \
+    \ plt.show()\n        \n    def save(self, filename):\n        anim = FuncAnimation(self.fig,\
+    \ self.update, frames=2000, interval=50, blit=False)\n        anim.save(filename,\
+    \ writer=PillowWriter(fps=20))\n        print(f\"Animation saved as {filename}\"\
+    )\n\n    def save4k(self, filename):\n        anim = FuncAnimation(self.fig, self.update,\
+    \ frames=2000, interval=50, blit=False)\n        \n        # Set up the figure\
+    \ for 4K export while maintaining aspect ratio\n        self.fig.set_size_inches(16,\
+    \ 9)  # Set to 16:9 ratio\n        self.fig.set_dpi(240)  # 240 DPI * 16 inches\
+    \ = 3840 pixels wide\n        \n        writer = FFMpegWriter(fps=30, codec='h264')\n\
+    \        anim.save(filename, writer=writer)\n        print(f\"Animation saved\
+    \ as {filename}\")\n\n"
+  metadata:
+    performance: {}
+    history: Chunk generated from lines 10 to 188.
+    error_bars: null
+- chunk_id: 009
+  description: Chunk 9
+  enabled: true
+  content: 'styles = {''light'': ''default'', ''dark'': ''dark_background''}
+
+    '
+  metadata:
+    performance: {}
+    history: Chunk generated from lines 189 to 189.
+    error_bars: null
+- chunk_id: '010'
+  description: Chunk 10
+  enabled: true
+  content: "for version, style in styles.items():\n    solar_system = SolarSystemAnimation(style=style)\n\
+    \    filename = os.path.join(OS_PATH, f\"output/inner_solar_system_more_action_{version}.mov\"\
+    )\n    solar_system.save4k(filename)\n    filename = os.path.join(OS_PATH, f\"\
+    output/inner_solar_system_more_action_{version}.gif\")\n    solar_system.save(filename)\n\
+    \    #solar_system.animate()\n"
+  metadata:
+    performance: {}
+    history: Chunk generated from lines 190 to 196.
+    error_bars: null

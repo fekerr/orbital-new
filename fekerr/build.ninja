@@ -10,16 +10,23 @@ rule install_tools
 # Phony target for installing tools (always runs).
 build install_tools: phony install_tools.sh
 
-# Rule for building YAML chunks using the python_to_yaml.py script.
-rule build_chunks
+# Rules for building YAML chunks using the python_to_yaml.py script.
+rule build_2d_chunks
+  command = python3 python_to_yaml.py $in $out
+  description = Building YAML chunks from $in
+
+rule build_3d_chunks
   command = python3 python_to_yaml.py $in $out
   description = Building YAML chunks from $in
 
 # Example target: Build YAML chunks from a specified input Python file.
-build output_chunks.yaml: build_chunks ../inner_solar_system_more_action_2d.py
+build output_2d_chunks.yaml: build_2d_chunks ../inner_solar_system_more_action_2d.py
+
+# Example target: Build YAML chunks from a specified input Python file.
+build output_3d_chunks.yaml: build_3d_chunks ../complete_solar_system_3d.py
 
 # Phony target 'all' to group targets.
-build all: phony install_tools output_chunks.yaml
+build all: phony install_tools output_2d_chunks.yaml output_3d_chunks.yaml
 
 # Set default target.
 default all
