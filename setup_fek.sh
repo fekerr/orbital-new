@@ -1,3 +1,3 @@
 pip install numpy matplotlib
-apt-get install ffmpeg  # Linux
+sudo apt-get install ffmpeg  # Linux
 
