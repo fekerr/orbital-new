@@ -1,39 +1,43 @@
-#!/usr/bin/env python3
+# regex_utils.py
 """
 regex_utils.py
 
-This module includes utility functions for handling regular expressions in our project.
-We use these functions to detect chunk markers in Python scripts. By isolating regex logic
-in this module, we enhance maintainability, readability, and enable targeted unit testing.
+This module provides utility functions encapsulating all regex-based logic
+for our Python-to-YAML chunking tool. Separating regular expression code into
+this module enhances maintainability and facilitates unit testing.
 
 Functions:
     - is_chunk_marker(line: str, marker_pattern: str) -> bool
-        Checks if a given line matches the specified marker pattern.
+        Checks if a given line matches the specified chunk marker pattern.
+    - is_blank_line(line: str) -> bool
+        Determines if a line consists only of whitespace (i.e. a blank line).
 """
 
 import re
 
 def is_chunk_marker(line: str, marker_pattern: str) -> bool:
     """
-    Determines whether the provided line qualifies as a chunk marker based on a regex pattern.
-    
+    Checks whether the given line contains the chunk marker defined by the regex pattern.
+
     Parameters:
-        line (str): A string representing a single line from a Python script.
-        marker_pattern (str): A regex pattern used to identify the chunk marker.
-            For example, r'# --- CHUNK ---'
-    
+        line (str): A line from the source Python script.
+        marker_pattern (str): A regex pattern to identify a chunk marker.
+            (e.g., r'# --- CHUNK ---')
+
     Returns:
-        bool: True if the line matches the marker pattern; otherwise, False.
-    
-    This function compiles the given pattern and checks if there is a match anywhere
-    in the line. This abstraction is designed to keep the main chunking code clean and
-    focused, while all regex complexities reside in this module.
+        bool: True if the line matches the marker, otherwise False.
     """
-    # Compile the regex pattern.
     pattern = re.compile(marker_pattern)
-    
-    # Search for the pattern in the given line.
-    match = pattern.search(line)
-    
-    # Return True if a match is found, else False.
-    return bool(match)
+    return bool(pattern.search(line))
+
+def is_blank_line(line: str) -> bool:
+    """
+    Returns True if the line is blank (contains only whitespace), False otherwise.
+
+    Parameters:
+        line (str): A string representing a line from a file.
+
+    Returns:
+        bool: True if the line is empty or only whitespace, False otherwise.
+    """
+    return bool(re.match(r'^\s*$', line))
