@@ -1,0 +1,26 @@
+Below is an updated snippet for your `build.ninja` file. In particular, the rule for checking YAML files now correctly escapes the `$` signs (using `$$`) so that the shell receives the proper variables. Please replace your existing `check_yaml` rule with the following:
+
+```ninja
+# Rule to check a YAML file using yamllint.
+rule check_yaml
+  command = bash -c 'if [ "$${FEKERR_YAML_CHECK:-1}" -eq 1 ]; then yamllint "$$in"; else echo "YAML lint check skipped for $$in"; fi'
+  description = "Checking YAML file $$in with yamllint"
+```
+
+### Explanation
+
+- **Escaping Dollar Signs:**  
+  In Ninja, a literal dollar sign needs to be written as `$$`. In this rule:
+  - The environment variable expression becomes `"$${FEKERR_YAML_CHECK:-1}"` (so the shell sees `${FEKERR_YAML_CHECK:-1}`).
+  - The file input variable is referenced as `$$in` so that the shell sees the value of `in`.
+  
+- **Result:**  
+  With these changes, when Ninja runs the `check_yaml` rule, it will use the correct paths for the YAML files (for example, `output_2d_chunks.yaml` and `output_3d_chunks.yaml`) rather than an empty string.
+
+Please update your `build.ninja` with this rule and re-run:
+
+```bash
+ninja
+```
+
+If you still see errors, double-check that the files (like `output_2d_chunks.yaml`) exist at the expected paths. Let me know if you encounter any further issues!

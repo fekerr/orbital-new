@@ -1,16 +1,17 @@
 #!/bin/bash
 # install_tools.sh
-# This script installs required tools for the project:
+# This script installs the required tools for the project:
 #  - Ninja (using apt-get)
 #  - yamllint (using pip3)
-#  - Upgrades pip and installs PyYAML (using pip3)
+#  - PyYAML (using pip3)
 #
-# The script checks if it is running as root or a regular user to determine
-# whether to use 'sudo' for apt-get commands.
+# It first checks if the tools are already installed, and if not,
+# installs them based on whether the script is running as root or as a normal user.
+#
+# Exit immediately if any command exits with a non-zero status.
+set -e
 
-set -e  # Exit immediately if any command exits with a non-zero status
-
-# Function to install Ninja if it is not installed.
+# Function to install Ninja if it's not already installed.
 install_ninja() {
     if command -v ninja >/dev/null 2>&1; then
         echo "Ninja is already installed."
@@ -24,7 +25,7 @@ install_ninja() {
     fi
 }
 
-# Function to install yamllint if it is not installed.
+# Function to install yamllint if it's not already installed.
 install_yamllint() {
     if command -v yamllint >/dev/null 2>&1; then
         echo "yamllint is already installed."
@@ -34,7 +35,7 @@ install_yamllint() {
     fi
 }
 
-# Install Ninja and yamllint using the functions above.
+# Run the installation functions.
 install_ninja
 install_yamllint
 

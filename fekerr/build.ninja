@@ -31,9 +31,10 @@ build output_3d_chunks.yaml: build_chunks ../complete_solar_system_3d.py
 
 # ----------------------------------------------------------------------
 # Rule to check a YAML file using yamllint.
+# TODO: fix the 80 columns eventually
 rule check_yaml
-  command = bash -c 'if [ "${FEKERR_YAML_CHECK:-1}" -eq 1 ]; then yamllint "$in"; else echo "YAML lint check skipped for $in"; fi'
-  description = "Checking YAML file $in with yamllint"
+  command = bash -c 'if [ "$${FEKERR_YAML_CHECK:-1}" -eq 1 ]; then yamllint "$$in"; else echo "YAML lint check skipped for $$in"; fi'
+  description = "Checking YAML file $$in with yamllint"
 
 build check_2d_yaml: check_yaml output_2d_chunks.yaml
 build check_3d_yaml: check_yaml output_3d_chunks.yaml
