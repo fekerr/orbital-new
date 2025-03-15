@@ -138,16 +138,22 @@ def split_into_chunks(file_path):
 
     return chunks
 
-def write_yaml(chunks, output_path):
     """
+    TODO: some documentation may have been lost by copilot
     Writes the list of chunks into a YAML file.
 
     Parameters:
         chunks (List[Dict]): The list of chunk definitions.
         output_path (str): The output YAML file path.
     """
+
+def write_yaml(chunks, output_path):
+    """
+    Writes the chunks to a YAML file.
+    """
     with open(output_path, 'w') as f:
-        yaml.dump(chunks, f, sort_keys=False)
+        # explicit_start=True forces what looks like a document start marker ('---') at the top.
+        yaml.dump(chunks, f, sort_keys=False, explicit_start=True)
 
 def main():
     if len(sys.argv) < 3:
