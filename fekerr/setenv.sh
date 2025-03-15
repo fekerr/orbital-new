@@ -1,19 +1,26 @@
-#!/bin/bash
 # setenv.sh
 #
-# This file defines environment variables used by the project.
-# Source this file in your shell (e.g., "source setenv.sh") to set up your environment.
+# This file sets environment variables for the project.
+# It is intended to be sourced (e.g., "source setenv.sh") to update your current shell's environment.
+# Do not mark this file as executable.
 #
 # Variables:
 #
 #   FEKERR_YAML_CHECK:
-#       Controls YAML linting.
-#       Set to 1 (default) to enable YAML lint checks.
-#       Set to 0 to disable YAML linting during builds.
-export FEKERR_YAML_CHECK=1
+#       Controls YAML linting. Defaults to 1 (enabled). Set to 0 to disable.
+#
+#   GITUP_COUNT_FILE:
+#       Specifies the file where the gitup script stores the commit count.
+#
+# If run directly (e.g., via "bash setenv.sh"), warn the user that it should be sourced.
 
-# GITUP_COUNT_FILE:
-#       Specifies the file where the gitup target stores the commit count.
-export GITUP_COUNT_FILE=commit_count.txt
+if [ "${BASH_SOURCE[0]}" = "$0" ]; then
+    echo "WARNING: This script is intended to be sourced, not executed." >&2
+fi
 
-# You can add more environment variables here as needed.
+export FEKERR_YAML_CHECK=${FEKERR_YAML_CHECK:-1}
+export GITUP_COUNT_FILE=${GITUP_COUNT_FILE:-commit_count.txt}
+
+echo "Environment variables set:"
+echo "  FEKERR_YAML_CHECK = ${FEKERR_YAML_CHECK}"
+echo "  GITUP_COUNT_FILE  = ${GITUP_COUNT_FILE}"
